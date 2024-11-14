@@ -5,7 +5,7 @@ import      android.widget.AdapterView.OnItemClickListener
 import      android.widget.TextView
 import      androidx.recyclerview.widget.RecyclerView
 import      com.rubdashen.finsimple.R
-
+import com.rubdashen.finsimple.menu.wallet.bills.models.BillView
 
 
 public final class BillViewPrototype : RecyclerView.ViewHolder

@@ -1,6 +1,6 @@
 package     com.rubdashen.finsimple.shared.api.bill.response
 
-import      com.rubdashen.finsimple.menu.wallet.bills.adapter.BillView
+import      com.rubdashen.finsimple.menu.wallet.bills.models.BillView
 
 
 

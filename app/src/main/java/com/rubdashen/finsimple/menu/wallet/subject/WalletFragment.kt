@@ -9,13 +9,14 @@ import      android.widget.AdapterView
 import      android.widget.AdapterView.OnItemClickListener
 import      android.widget.Button
 import      android.widget.TextView
+import android.widget.Toast
 import      androidx.fragment.app.FragmentManager
 import      androidx.fragment.app.FragmentTransaction
 import      androidx.recyclerview.widget.LinearLayoutManager
 import      androidx.recyclerview.widget.RecyclerView
 import      com.rubdashen.finsimple.R
 import      com.rubdashen.finsimple.menu.wallet.creation.CreateBillFragment
-import      com.rubdashen.finsimple.menu.wallet.bills.adapter.BillView
+import      com.rubdashen.finsimple.menu.wallet.bills.models.BillView
 import      com.rubdashen.finsimple.menu.wallet.bills.adapter.BillsViewAdapter
 import      com.rubdashen.finsimple.menu.wallet.information.BillInformationFragment
 import      com.rubdashen.finsimple.shared.api.ApiWorker
@@ -93,6 +94,9 @@ public final class WalletFragment : Fragment(R.layout.fragment_wallet), OnItemCl
     private fun loadBills(): Unit {
         this.m_Bills.clear()
         val call: Call<List<BillViewInformationResponse>> = ApiWorker.billsViewInformation()
+        val noBillsTextView: TextView = view?.findViewById(R.id.no_bills_text)!!
+        val originalText: String = noBillsTextView.text.toString()
+        noBillsTextView.text = "Cargando letras..."
 
         call.enqueue(object: Callback<List<BillViewInformationResponse>> {
             public override fun onResponse(
@@ -104,10 +108,11 @@ public final class WalletFragment : Fragment(R.layout.fragment_wallet), OnItemCl
 
                     userInformationResponse?.let {
                         try {
-                            val nothingText: TextView = view?.findViewById(R.id.no_bills_text)!!
+                            val companyText: TextView = view?.findViewById(R.id.home_company_text)!!
+                            companyText.text = UserWrapperSettings.company
 
                             if (it.isNotEmpty()) {
-                                nothingText.visibility = TextView.INVISIBLE
+                                noBillsTextView.visibility = TextView.INVISIBLE
 
                                 for (bill in it) {
                                     this@WalletFragment.m_Bills.add(bill.toBillView())
@@ -116,8 +121,11 @@ public final class WalletFragment : Fragment(R.layout.fragment_wallet), OnItemCl
                                 this@WalletFragment.billsView()
                             }
                             else {
-                                nothingText.visibility = TextView.VISIBLE
+                                noBillsTextView.visibility  = TextView.VISIBLE
+                                noBillsTextView.text        = originalText
                             }
+
+                            this@WalletFragment.makeToast("Letras cargadas")
                         }
                         catch (_: Exception) { }
                     }
@@ -127,7 +135,13 @@ public final class WalletFragment : Fragment(R.layout.fragment_wallet), OnItemCl
             public override fun onFailure(
                 call: Call<List<BillViewInformationResponse>>,
                 t: Throwable
-            ): Unit { }
+            ): Unit {
+                val companyText: TextView   = view?.findViewById(R.id.home_company_text)!!
+                companyText.text            = UserWrapperSettings.company
+                noBillsTextView.text        = originalText
+
+                this@WalletFragment.makeToast("No se pudo cargar las letras")
+            }
         })
     }
     private fun changeToBillCreation(): Unit {
@@ -152,5 +166,8 @@ public final class WalletFragment : Fragment(R.layout.fragment_wallet), OnItemCl
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.main, fragment)
         fragmentTransaction.commit()
+    }
+    private fun makeToast(message: String): Unit {
+        Toast.makeText(this.requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

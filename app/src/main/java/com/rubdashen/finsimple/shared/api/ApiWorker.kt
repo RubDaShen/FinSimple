@@ -3,6 +3,7 @@ package     com.rubdashen.finsimple.shared.api
 import com.rubdashen.finsimple.menu.wallet.bills.models.BillCreationInformation
 import com.rubdashen.finsimple.shared.api.bill.BillApiService
 import com.rubdashen.finsimple.shared.api.bill.response.BillCreationResponse
+import com.rubdashen.finsimple.shared.api.bill.response.BillInformationResponse
 import      com.rubdashen.finsimple.shared.api.bill.response.BillViewInformationResponse
 import      com.rubdashen.finsimple.shared.api.user.UserApiService
 import      com.rubdashen.finsimple.shared.api.user.request.UserLoginRequest
@@ -93,6 +94,18 @@ public final class ApiWorker
             val call = service.createBill(
                 "Bearer ${UserWrapperSettings.token}",
                 bill.toCreationRequest()
+            )
+
+            return call
+        }
+        public fun billInformation(id: Int): Call<BillInformationResponse> {
+            val retrofit = Retrofit.Builder()
+                .baseUrl(FinSimpleSettings.apiUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            val service = retrofit.create(BillApiService::class.java)
+            val call = service.billsInformation(
+                "Bearer ${UserWrapperSettings.token}", id
             )
 
             return call

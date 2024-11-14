@@ -2,6 +2,7 @@ package     com.rubdashen.finsimple.shared.api.bill
 
 import      com.rubdashen.finsimple.shared.api.bill.request.BillCreationRequest
 import      com.rubdashen.finsimple.shared.api.bill.response.BillCreationResponse
+import com.rubdashen.finsimple.shared.api.bill.response.BillInformationResponse
 import      com.rubdashen.finsimple.shared.api.bill.response.BillViewInformationResponse
 import      retrofit2.Call
 import      retrofit2.http.Body
@@ -25,4 +26,10 @@ public interface BillApiService
         @Header("Authorization") token: String,
         @Body body: BillCreationRequest
     ): Call<BillCreationResponse>
+
+    @GET("api/v1/bill/billInformation")
+    public fun billsInformation(
+        @Header("Authorization") token: String,
+        @Query("id") id: Int
+    ): Call<BillInformationResponse>
 }

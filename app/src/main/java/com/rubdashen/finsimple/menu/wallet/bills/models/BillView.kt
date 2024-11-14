@@ -1,4 +1,4 @@
-package     com.rubdashen.finsimple.menu.wallet.bills.adapter
+package     com.rubdashen.finsimple.menu.wallet.bills.models
 
 
 
