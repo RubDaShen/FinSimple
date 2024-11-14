@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".menu.wallet.subject.WalletFragment">
+
+    <View
+        android:id="@+id/holder_home"
+        android:layout_width="368dp"
+        android:layout_height="547dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="164dp"
+        android:background="@drawable/login_rectangle_shape"
+        android:backgroundTint="@color/light_green"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/home_company_logo"
+        android:layout_width="70dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/generic_company"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/home_greetings_text"
+        android:layout_width="200dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/greetings_user"
+        android:textColor="@color/yellowish"
+        app:layout_constraintStart_toEndOf="@+id/home_company_logo"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/home_company_text"
+        android:layout_width="262dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="3dp"
+        android:textColor="@color/yellowish"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/home_company_logo"
+        app:layout_constraintTop_toBottomOf="@+id/home_greetings_text"
+        tools:text="TextView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_recycler_view"
+        android:layout_width="339dp"
+        android:layout_height="520dp"
+        app:layout_constraintBottom_toBottomOf="@+id/holder_home"
+        app:layout_constraintEnd_toEndOf="@+id/holder_home"
+        app:layout_constraintStart_toStartOf="@+id/holder_home"
+        app:layout_constraintTop_toTopOf="@+id/holder_home" />
+
+    <TextView
+        android:id="@+id/no_bills_text"
+        android:layout_width="281dp"
+        android:layout_height="102dp"
+        android:text="@string/no_bills_text_description"
+        android:textAlignment="center"
+        android:textColor="@color/brown"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/holder_home"
+        app:layout_constraintEnd_toEndOf="@+id/holder_home"
+        app:layout_constraintStart_toStartOf="@+id/holder_home"
+        app:layout_constraintTop_toTopOf="@+id/holder_home" />
+
+    <Button
+        android:id="@+id/add_bill_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:text="@string/add_bill_button_text"
+        app:backgroundTint="@color/orange"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_company_logo" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/nav_home_text"
+        android:icon="@drawable/wallet_icon"
+        android:id="@+id/navigation_wallet"/>
+    <item android:title="@string/nav_user_text"
+        android:icon="@drawable/user_icon"
+        android:id="@+id/navigation_user"/>
+    <item android:title="@string/nav_exit_text"
+        android:icon="@drawable/exit_icon"
+        android:id="@+id/navigation_exit"/>
+</menu>
