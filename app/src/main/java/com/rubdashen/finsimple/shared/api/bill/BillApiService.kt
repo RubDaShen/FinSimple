@@ -1,8 +1,10 @@
 package     com.rubdashen.finsimple.shared.api.bill
 
 import      com.rubdashen.finsimple.shared.api.bill.request.BillCreationRequest
+import com.rubdashen.finsimple.shared.api.bill.request.BillDeletionRequest
 import com.rubdashen.finsimple.shared.api.bill.request.BillUpdateRequest
 import      com.rubdashen.finsimple.shared.api.bill.response.BillCreationResponse
+import com.rubdashen.finsimple.shared.api.bill.response.BillDeletionResponse
 import com.rubdashen.finsimple.shared.api.bill.response.BillInformationResponse
 import com.rubdashen.finsimple.shared.api.bill.response.BillUpdateResponse
 import      com.rubdashen.finsimple.shared.api.bill.response.BillViewInformationResponse
@@ -46,6 +48,6 @@ public interface BillApiService
     @DELETE("api/v1/bill/deleteBill")
     public fun deleteBill(
         @Header("Authorization") token: String,
-        @Body body: BillUpdateRequest
-    ): Call<BillUpdateResponse>
+        @Query("userId") userId: Int, @Query("billId") billId: Int
+    ): Call<BillDeletionResponse>
 }

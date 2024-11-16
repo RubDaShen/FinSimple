@@ -67,4 +67,7 @@
     <string name="bit_17">Valor Recibido</string>
     <string name="bit_18">Valor Entregado</string>
     <string name="bit_19">Tasa de Costo Efectivo Anual (TCEA)</string>
+    <string name="bit_20">¿Estás seguro que deseas eliminar esta letra? No podrás deshacer el proceso después </string>
+    <string name="bit_21">Cancelar</string>
+    <string name="bit_22">Eliminar</string>
 </resources>

@@ -8,6 +8,7 @@ import      android.view.ViewGroup
 import android.widget.Button
 import      android.widget.ImageButton
 import      android.widget.TextView
+import android.widget.Toast
 import      androidx.fragment.app.Fragment
 import      androidx.fragment.app.FragmentManager
 import      androidx.fragment.app.FragmentTransaction
@@ -17,6 +18,7 @@ import      com.rubdashen.finsimple.menu.wallet.bills.models.BillView
 import com.rubdashen.finsimple.menu.wallet.edition.CreateUpdateBillFragment
 import      com.rubdashen.finsimple.menu.wallet.subject.WalletFragment
 import      com.rubdashen.finsimple.shared.api.ApiWorker
+import com.rubdashen.finsimple.shared.api.bill.response.BillDeletionResponse
 import      com.rubdashen.finsimple.shared.api.bill.response.BillInformationResponse
 import      com.rubdashen.finsimple.shared.bill.BillConstraints
 import      com.rubdashen.finsimple.shared.bill.types.BankType
@@ -26,6 +28,7 @@ import      retrofit2.Response
 import      java.text.SimpleDateFormat
 import      java.util.Date
 import      java.util.concurrent.TimeUnit
+import kotlin.math.PI
 import      kotlin.math.pow
 
 
@@ -77,12 +80,18 @@ public final class BillInformationFragment : Fragment
     ): Unit {
         super.onViewCreated(view, savedInstanceState)
 
+        this.configure()
         this.editBillInformation()
         this.eliminateBill()
         this.billInformation()
         this.backToBills()
+        this.cancelElimination()
+        this.confirmElimination()
     }
 
+    private fun configure(): Unit {
+        this.deleteBillDialog(false)
+    }
     private fun backToBills(): Unit {
         val backButton: ImageButton = view?.findViewById(R.id.bill_information_back_button)!!
         backButton.setOnClickListener {
@@ -96,10 +105,58 @@ public final class BillInformationFragment : Fragment
         }
     }
     private fun eliminateBill(): Unit {
-        val editButton: Button = view?.findViewById(R.id.delete_bill_button)!!
-        editButton.setOnClickListener {
-
+        val deleteButton: Button = view?.findViewById(R.id.delete_bill_button)!!
+        deleteButton.setOnClickListener {
+            this.deleteBillDialog(true)
         }
+    }
+    private fun cancelElimination(): Unit {
+        val cancelButton: Button = view?.findViewById(R.id.delete_bill_no_button)!!
+        cancelButton.setOnClickListener {
+            this.deleteBillDialog(false)
+        }
+    }
+    private fun confirmElimination(): Unit {
+        val deleteButton: Button = view?.findViewById(R.id.delete_bill_yes_button)!!
+        deleteButton.setOnClickListener {
+            this.deleteBill()
+        }
+    }
+    private fun deleteBill(): Unit {
+        val deleteButton: Button = view?.findViewById(R.id.delete_bill_button)!!
+        val call: Call<BillDeletionResponse> = ApiWorker.deleteBill(this.d_BillView.id)
+        val originalText: String = deleteButton.text.toString()
+
+        deleteButton.text = "Eliminando..."
+        call.enqueue(object: Callback<BillDeletionResponse> {
+            public override fun onResponse(
+                call: Call<BillDeletionResponse>,
+                response: Response<BillDeletionResponse>
+            ): Unit {
+                if (response.isSuccessful) {
+                    val billInformationResponse: BillDeletionResponse? = response.body()
+
+                    billInformationResponse?.let {
+                        try {
+                            this@BillInformationFragment.makeToast("¡La letra ha sido eliminada de la existencia!")
+                            this@BillInformationFragment.replaceFragment(WalletFragment())
+                        }
+                        catch (_: Exception) { }
+                    }
+                }
+
+                this@BillInformationFragment.deleteBillDialog(false)
+                deleteButton.text = originalText
+            }
+
+            public override fun onFailure(
+                call: Call<BillDeletionResponse>,
+                t: Throwable
+            ): Unit {
+                this@BillInformationFragment.deleteBillDialog(false)
+                deleteButton.text = originalText
+            }
+        })
     }
 
     private fun billInformation(): Unit {
@@ -213,9 +270,27 @@ public final class BillInformationFragment : Fragment
         tceaView.text = df7.format(information.tcea * 100) + "%"
     }
 
-    private fun showDeleteDialog(): Unit {
-        val dialog: DeleteBillDialog = DeleteBillDialog(this.d_BillView.id)
-        dialog.show(this.parentFragmentManager, "delete_bill")
+    private fun deleteBillDialog(show: Boolean): Unit {
+        val background: View        = view?.findViewById(R.id.background_shade)!!
+        val holder: View            = view?.findViewById(R.id.bill_delete_dialog_holder)!!
+        val warningText: TextView   = view?.findViewById(R.id.bill_delete_warning_text)!!
+        val cancelButton: Button    = view?.findViewById(R.id.delete_bill_no_button)!!
+        val deleteButton: Button    = view?.findViewById(R.id.delete_bill_yes_button)!!
+
+        if (show) {
+            background.visibility   = View.VISIBLE
+            holder.visibility       = View.VISIBLE
+            warningText.visibility  = View.VISIBLE
+            cancelButton.visibility = View.VISIBLE
+            deleteButton.visibility = View.VISIBLE
+        }
+        else {
+            background.visibility   = View.GONE
+            holder.visibility       = View.GONE
+            warningText.visibility  = View.GONE
+            cancelButton.visibility = View.GONE
+            deleteButton.visibility = View.GONE
+        }
     }
 
     private fun replaceFragment(fragment: Fragment): Unit {
@@ -223,5 +298,8 @@ public final class BillInformationFragment : Fragment
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.main, fragment)
         fragmentTransaction.commit()
+    }
+    private fun makeToast(message: String): Unit {
+        Toast.makeText(this.requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

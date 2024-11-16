@@ -2,7 +2,9 @@ package     com.rubdashen.finsimple.shared.api
 
 import com.rubdashen.finsimple.menu.wallet.bills.models.BillBaseInformation
 import com.rubdashen.finsimple.shared.api.bill.BillApiService
+import com.rubdashen.finsimple.shared.api.bill.request.BillDeletionRequest
 import com.rubdashen.finsimple.shared.api.bill.response.BillCreationResponse
+import com.rubdashen.finsimple.shared.api.bill.response.BillDeletionResponse
 import com.rubdashen.finsimple.shared.api.bill.response.BillInformationResponse
 import com.rubdashen.finsimple.shared.api.bill.response.BillUpdateResponse
 import      com.rubdashen.finsimple.shared.api.bill.response.BillViewInformationResponse
@@ -119,6 +121,19 @@ public final class ApiWorker
             val service = retrofit.create(BillApiService::class.java)
             val call = service.updateBill(
                 "Bearer ${UserWrapperSettings.token}", bill.toUpdateRequest(id)
+            )
+
+            return call
+        }
+        public fun deleteBill(id: Int): Call<BillDeletionResponse> {
+            val retrofit = Retrofit.Builder()
+                .baseUrl(FinSimpleSettings.apiUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            val service = retrofit.create(BillApiService::class.java)
+            val call = service.deleteBill(
+                "Bearer ${UserWrapperSettings.token}",
+                UserWrapperSettings.userId, id
             )
 
             return call
