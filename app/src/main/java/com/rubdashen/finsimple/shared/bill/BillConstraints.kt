@@ -16,5 +16,7 @@ public final class BillConstraints
         public const val minExpirationInDays: Long      = 7
         public const val minRetentionValue: Double      = 0.0
         public const val maxRetentionValue: Double      = 25.0
+
+        public const val invalidBillId: Int            = 0
     }
 }

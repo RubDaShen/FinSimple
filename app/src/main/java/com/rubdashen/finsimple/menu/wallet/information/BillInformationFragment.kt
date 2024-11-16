@@ -1,32 +1,32 @@
 package     com.rubdashen.finsimple.menu.wallet.information
 
-import android.icu.text.DecimalFormat
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import      android.icu.text.DecimalFormat
+import      android.os.Bundle
+import      android.view.LayoutInflater
+import      android.view.View
+import      android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import com.rubdashen.finsimple.R
-import com.rubdashen.finsimple.menu.wallet.bills.models.BillInformation
-import com.rubdashen.finsimple.menu.wallet.bills.models.BillView
-import com.rubdashen.finsimple.menu.wallet.creation.CreateBillFragment
-import com.rubdashen.finsimple.menu.wallet.subject.WalletFragment
-import com.rubdashen.finsimple.shared.api.ApiWorker
-import com.rubdashen.finsimple.shared.api.bill.response.BillInformationResponse
-import com.rubdashen.finsimple.shared.bill.BillConstraints
-import com.rubdashen.finsimple.shared.bill.types.BankType
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.concurrent.TimeUnit
-import kotlin.math.pow
+import      android.widget.ImageButton
+import      android.widget.TextView
+import      androidx.fragment.app.Fragment
+import      androidx.fragment.app.FragmentManager
+import      androidx.fragment.app.FragmentTransaction
+import      com.rubdashen.finsimple.R
+import      com.rubdashen.finsimple.menu.wallet.bills.models.BillInformation
+import      com.rubdashen.finsimple.menu.wallet.bills.models.BillView
+import com.rubdashen.finsimple.menu.wallet.edition.CreateUpdateBillFragment
+import      com.rubdashen.finsimple.menu.wallet.subject.WalletFragment
+import      com.rubdashen.finsimple.shared.api.ApiWorker
+import      com.rubdashen.finsimple.shared.api.bill.response.BillInformationResponse
+import      com.rubdashen.finsimple.shared.bill.BillConstraints
+import      com.rubdashen.finsimple.shared.bill.types.BankType
+import      retrofit2.Call
+import      retrofit2.Callback
+import      retrofit2.Response
+import      java.text.SimpleDateFormat
+import      java.util.Date
+import      java.util.concurrent.TimeUnit
+import      kotlin.math.pow
 
 
 public final class BillInformationFragment : Fragment
@@ -51,7 +51,7 @@ public final class BillInformationFragment : Fragment
     //	-------------------------------------------
     public constructor(
         billView: BillView
-    ): super(R.layout.fragment_create_bill) {
+    ): super(R.layout.fragment_create_update_bill) {
         this.d_BillView = billView
     }
 
@@ -90,10 +90,16 @@ public final class BillInformationFragment : Fragment
         }
     }
     private fun editBillInformation(): Unit {
-
+        val editButton: Button = view?.findViewById(R.id.update_bill_button)!!
+        editButton.setOnClickListener {
+            this.replaceFragment(CreateUpdateBillFragment(this.d_BillView.id))
+        }
     }
     private fun eliminateBill(): Unit {
+        val editButton: Button = view?.findViewById(R.id.delete_bill_button)!!
+        editButton.setOnClickListener {
 
+        }
     }
 
     private fun billInformation(): Unit {
@@ -205,6 +211,11 @@ public final class BillInformationFragment : Fragment
         deliveredValueView.text = "S/" + df2.format(information.deliveredValue)
         receivedValueView.text = "S/" + df2.format(information.receivedValue)
         tceaView.text = df7.format(information.tcea * 100) + "%"
+    }
+
+    private fun showDeleteDialog(): Unit {
+        val dialog: DeleteBillDialog = DeleteBillDialog(this.d_BillView.id)
+        dialog.show(this.parentFragmentManager, "delete_bill")
     }
 
     private fun replaceFragment(fragment: Fragment): Unit {

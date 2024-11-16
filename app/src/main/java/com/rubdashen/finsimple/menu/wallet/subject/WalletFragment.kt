@@ -9,15 +9,16 @@ import      android.widget.AdapterView
 import      android.widget.AdapterView.OnItemClickListener
 import      android.widget.Button
 import      android.widget.TextView
-import android.widget.Toast
+import      android.widget.Toast
 import      androidx.fragment.app.FragmentManager
 import      androidx.fragment.app.FragmentTransaction
 import      androidx.recyclerview.widget.LinearLayoutManager
 import      androidx.recyclerview.widget.RecyclerView
 import      com.rubdashen.finsimple.R
-import      com.rubdashen.finsimple.menu.wallet.creation.CreateBillFragment
+import      com.rubdashen.finsimple.menu.wallet.edition.CreateUpdateBillFragment
 import      com.rubdashen.finsimple.menu.wallet.bills.models.BillView
 import      com.rubdashen.finsimple.menu.wallet.bills.adapter.BillsViewAdapter
+import com.rubdashen.finsimple.menu.wallet.edition.types.EditTypeAction
 import      com.rubdashen.finsimple.menu.wallet.information.BillInformationFragment
 import      com.rubdashen.finsimple.shared.api.ApiWorker
 import      com.rubdashen.finsimple.shared.api.bill.response.BillViewInformationResponse
@@ -147,7 +148,7 @@ public final class WalletFragment : Fragment(R.layout.fragment_wallet), OnItemCl
     private fun changeToBillCreation(): Unit {
         val createBillButton: Button = view?.findViewById(R.id.add_bill_button)!!
         createBillButton.setOnClickListener {
-            this.replaceFragment(CreateBillFragment())
+            this.replaceFragment(CreateUpdateBillFragment())
         }
     }
 

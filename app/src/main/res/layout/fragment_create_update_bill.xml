@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".menu.wallet.creation.CreateBillFragment">
+    tools:context=".menu.wallet.edition.CreateUpdateBillFragment">
 
     <View
         android:id="@+id/create_bill_holder"
@@ -37,7 +37,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/create_bill_text"
+                    android:id="@+id/create_or_update_bill_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="11dp"
@@ -360,7 +360,7 @@
                 android:layout_marginTop="0dp">
 
                 <Button
-                    android:id="@+id/create_bill_button"
+                    android:id="@+id/create_or_update_bill_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"

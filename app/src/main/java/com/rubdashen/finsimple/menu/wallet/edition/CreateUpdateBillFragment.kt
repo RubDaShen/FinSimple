@@ -1,4 +1,4 @@
-package     com.rubdashen.finsimple.menu.wallet.creation
+package     com.rubdashen.finsimple.menu.wallet.edition
 
 import      android.app.DatePickerDialog
 import      android.icu.util.Calendar
@@ -14,14 +14,18 @@ import      android.widget.EditText
 import      android.widget.ImageButton
 import      android.widget.RadioGroup
 import      android.widget.Spinner
+import      android.widget.TextView
 import      android.widget.Toast
 import      androidx.fragment.app.FragmentManager
 import      androidx.fragment.app.FragmentTransaction
 import      com.rubdashen.finsimple.R
 import      com.rubdashen.finsimple.menu.wallet.subject.WalletFragment
-import      com.rubdashen.finsimple.menu.wallet.bills.models.BillCreationInformation
+import      com.rubdashen.finsimple.menu.wallet.bills.models.BillBaseInformation
+import      com.rubdashen.finsimple.menu.wallet.edition.types.EditTypeAction
 import      com.rubdashen.finsimple.shared.api.ApiWorker
 import      com.rubdashen.finsimple.shared.api.bill.response.BillCreationResponse
+import com.rubdashen.finsimple.shared.api.bill.response.BillInformationResponse
+import com.rubdashen.finsimple.shared.api.bill.response.BillUpdateResponse
 import      com.rubdashen.finsimple.shared.bill.types.BankType
 import      com.rubdashen.finsimple.shared.bill.BillConstraints
 import      com.rubdashen.finsimple.shared.bill.types.BankTypeConstraint
@@ -35,11 +39,38 @@ import      java.util.Locale
 
 
 
-public final class CreateBillFragment : Fragment(R.layout.fragment_create_bill)
+public final class CreateUpdateBillFragment : Fragment
 {
+//	|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-|
+//				    Members and Fields
+//	|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-|
+
+    //	-------------------------------------------
+    //					Variables
+    //	-------------------------------------------
+    private val m_Action: EditTypeAction
+    private val m_BillId: Int
+
+
+
 //	|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-|
 //			        Functions and Methods
 //	|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-|
+
+    //	-------------------------------------------
+    //			Constructors and ~Destructor~
+    //	-------------------------------------------
+    public constructor(
+        billId: Int
+    ): super(R.layout.fragment_create_update_bill) {
+        this.m_Action = EditTypeAction.EditBill
+        this.m_BillId = billId
+    }
+
+    public constructor(): super(R.layout.fragment_create_update_bill) {
+        this.m_Action = EditTypeAction.CreateBill
+        this.m_BillId = BillConstraints.invalidBillId
+    }
 
     //	-------------------------------------------
     //			    Loading Functions
@@ -52,7 +83,7 @@ public final class CreateBillFragment : Fragment(R.layout.fragment_create_bill)
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_create_bill, container, false)
+        return inflater.inflate(R.layout.fragment_create_update_bill, container, false)
     }
 
     //	-------------------------------------------
@@ -62,13 +93,32 @@ public final class CreateBillFragment : Fragment(R.layout.fragment_create_bill)
         view: View, savedInstanceState: Bundle?
     ): Unit {
         super.onViewCreated(view, savedInstanceState)
+        this.configureAction()
         this.configureBankSpinner(view)
         this.configureDatePickers()
         this.createButton()
+        this.editButton()
+
+        this.autofillEditInformation()
         this.backButton()
         this.bankAutocomplete()
     }
 
+    private fun configureAction(): Unit {
+        val title: TextView     = view?.findViewById(R.id.create_or_update_bill_text)!!
+        val button: TextView    = view?.findViewById(R.id.create_or_update_bill_button)!!
+
+        when (this.m_Action) {
+            EditTypeAction.CreateBill -> {
+                title.text = "Añadir una nueva letra"
+                button.text = "Crear letra"
+            }
+            EditTypeAction.EditBill -> {
+                title.text = "Editar letra"
+                button.text = "Actualizar letra"
+            }
+        }
+    }
     private fun configureBankSpinner(viewParent: View): Unit {
         val spinner: Spinner                = viewParent.findViewById(R.id.spinner_banks)!!
         val options: List<String>           = BankType.toStringList()
@@ -86,7 +136,7 @@ public final class CreateBillFragment : Fragment(R.layout.fragment_create_bill)
                 val radioGroup: RadioGroup  = viewParent.findViewById(R.id.radio_group_use_bank)!!
 
                 if (radioGroup.checkedRadioButtonId != -1) {
-                    this@CreateBillFragment.autofillBankInformation(bankType)
+                    this@CreateUpdateBillFragment.autofillBankInformation(bankType)
                 }
             }
 
@@ -138,23 +188,20 @@ public final class CreateBillFragment : Fragment(R.layout.fragment_create_bill)
             ).show()
         }
     }
-    private fun replaceFragment(fragment: Fragment): Unit {
-        val fragmentManager: FragmentManager = this.parentFragmentManager
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.main, fragment)
-        fragmentTransaction.commit()
-    }
 
     private fun createButton(): Unit {
-        val createButton = view?.findViewById<View>(R.id.create_bill_button)!!
+        val createButton = view?.findViewById<View>(R.id.create_or_update_bill_button)!!
         createButton.setOnClickListener {
-            if (!this.checkCreationInputs()) return@setOnClickListener
+            if (this.m_Action != EditTypeAction.CreateBill) return@setOnClickListener
 
+            if (!this.checkBillInputs()) return@setOnClickListener
             this.createBill()
         }
     }
     private fun createBill(): Unit {
-        val createButton: Button        = view?.findViewById(R.id.create_bill_button)!!
+        if (this.m_Action != EditTypeAction.CreateBill) return
+
+        val createButton: Button        = view?.findViewById(R.id.create_or_update_bill_button)!!
         val title: EditText             = view?.findViewById(R.id.edit_text_bill_title)!!
         val description: EditText       = view?.findViewById(R.id.editText_bill_description)!!
         val createdDate: EditText       = view?.findViewById(R.id.edit_text_bill_created_date)!!
@@ -169,7 +216,7 @@ public final class CreateBillFragment : Fragment(R.layout.fragment_create_bill)
 
         createButton.text = "Creando..."
         val call: Call<BillCreationResponse> = ApiWorker.createBill(
-            BillCreationInformation(
+            BillBaseInformation(
                 title.text.toString(),
                 description.text.toString(),
                 createdDate.text.toString(),
@@ -195,13 +242,13 @@ public final class CreateBillFragment : Fragment(R.layout.fragment_create_bill)
                         if (billCreationResponse.success) {
                             try {
                                 Toast.makeText(
-                                    this@CreateBillFragment.requireContext(),
+                                    this@CreateUpdateBillFragment.requireContext(),
                                     "Letra creada con éxito", Toast.LENGTH_SHORT
                                 ).show()
                             }
                             catch (_: Exception) { }
 
-                            this@CreateBillFragment.replaceFragment(WalletFragment())
+                            this@CreateUpdateBillFragment.replaceFragment(WalletFragment())
                         }
                     }
                 }
@@ -216,7 +263,134 @@ public final class CreateBillFragment : Fragment(R.layout.fragment_create_bill)
             }
         })
     }
-    private fun checkCreationInputs(): Boolean {
+
+    private fun editButton(): Unit {
+        val createButton = view?.findViewById<View>(R.id.create_or_update_bill_button)!!
+        createButton.setOnClickListener {
+            if (this.m_Action != EditTypeAction.EditBill) return@setOnClickListener
+
+            if (!this.checkBillInputs()) return@setOnClickListener
+            this.editBill()
+        }
+    }
+    private fun editBill(): Unit {
+        if (this.m_Action != EditTypeAction.EditBill) return
+
+        val createButton: Button        = view?.findViewById(R.id.create_or_update_bill_button)!!
+        val title: EditText             = view?.findViewById(R.id.edit_text_bill_title)!!
+        val description: EditText       = view?.findViewById(R.id.editText_bill_description)!!
+        val createdDate: EditText       = view?.findViewById(R.id.edit_text_bill_created_date)!!
+        val dueDate: EditText           = view?.findViewById(R.id.edit_text_bill_due_date)!!
+        val discountedDate: EditText    = view?.findViewById(R.id.edit_text_discounted_days)!!
+        val bank: Spinner               = view?.findViewById(R.id.spinner_banks)!!
+        val nominalValue: EditText      = view?.findViewById(R.id.edit_text_nominal_value)!!
+        val tea: EditText               = view?.findViewById(R.id.edit_text_tea)!!
+        val desgravamen: EditText       = view?.findViewById(R.id.edit_text_desgravamen)!!
+        val assignedRetention: EditText = view?.findViewById(R.id.edit_text_retention)!!
+        val originalText: String        = createButton.text.toString()
+
+        createButton.text = "Actualizando..."
+        val call: Call<BillUpdateResponse> = ApiWorker.updateBill(
+            this.m_BillId,
+            BillBaseInformation(
+                title.text.toString(),
+                description.text.toString(),
+                createdDate.text.toString(),
+                dueDate.text.toString(),
+                discountedDate.text.toString(),
+                nominalValue.text.toString().toDouble(),
+                BankType.fromString(bank.selectedItem.toString()),
+                tea.text.toString().toDouble(),
+                desgravamen.text.toString().toDouble(),
+                assignedRetention.text.toString().toDouble()
+            )
+        )
+
+        call.enqueue(object: Callback<BillUpdateResponse> {
+            public override fun onResponse(
+                call: Call<BillUpdateResponse>,
+                response: Response<BillUpdateResponse>
+            ): Unit {
+                if (response.isSuccessful) {
+                    val billCreationResponse: BillUpdateResponse? = response.body()
+
+                    billCreationResponse?.let {
+                        if (billCreationResponse.success) {
+                            try {
+                                Toast.makeText(
+                                    this@CreateUpdateBillFragment.requireContext(),
+                                    "Letra actualizada con éxito", Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            catch (_: Exception) { }
+
+                            this@CreateUpdateBillFragment.replaceFragment(WalletFragment())
+                        }
+                    }
+                }
+
+                createButton.text = originalText
+            }
+
+            public override fun onFailure(
+                call: Call<BillUpdateResponse>, t: Throwable
+            ): Unit {
+                createButton.text = originalText
+            }
+        })
+    }
+    private fun autofillEditInformation(): Unit {
+        if (this.m_Action != EditTypeAction.EditBill) return
+
+        val title: EditText             = view?.findViewById(R.id.edit_text_bill_title)!!
+        val description: EditText       = view?.findViewById(R.id.editText_bill_description)!!
+        val createdDate: EditText       = view?.findViewById(R.id.edit_text_bill_created_date)!!
+        val dueDate: EditText           = view?.findViewById(R.id.edit_text_bill_due_date)!!
+        val discountedDate: EditText    = view?.findViewById(R.id.edit_text_discounted_days)!!
+        val bank: Spinner               = view?.findViewById(R.id.spinner_banks)!!
+        val nominalValue: EditText      = view?.findViewById(R.id.edit_text_nominal_value)!!
+        val tea: EditText               = view?.findViewById(R.id.edit_text_tea)!!
+        val desgravamen: EditText       = view?.findViewById(R.id.edit_text_desgravamen)!!
+        val assignedRetention: EditText = view?.findViewById(R.id.edit_text_retention)!!
+
+        val call: Call<BillInformationResponse> = ApiWorker.billInformation(this.m_BillId)
+
+        call.enqueue(object: Callback<BillInformationResponse> {
+            public override fun onResponse(
+                call: Call<BillInformationResponse>,
+                response: Response<BillInformationResponse>
+            ): Unit {
+                if (response.isSuccessful) {
+                    val billInformationResponse: BillInformationResponse? = response.body()
+
+                    billInformationResponse?.let {
+                        try {
+                            val hres: BillInformationResponse = billInformationResponse
+
+                            title.setText(hres.title)
+                            description.setText(hres.description)
+                            createdDate.setText(hres.billCreatedDate)
+                            dueDate.setText(hres.billDueDate)
+                            discountedDate.setText(hres.billDiscountedDate)
+                            bank.setSelection(hres.bankTypeId)
+                            nominalValue.setText(hres.nominalValue.toBigDecimal().toPlainString())
+                            tea.setText(hres.tea.toBigDecimal().toPlainString())
+                            desgravamen.setText(hres.degravamen.toBigDecimal().toPlainString())
+                            assignedRetention.setText(hres.assignedRetention.toBigDecimal().toPlainString())
+                        }
+                        catch (_: Exception) { }
+                    }
+                }
+            }
+
+            public override fun onFailure(
+                call: Call<BillInformationResponse>,
+                t: Throwable
+            ): Unit { }
+        })
+    }
+
+    private fun checkBillInputs(): Boolean {
         val title: EditText             = view?.findViewById(R.id.edit_text_bill_title)!!
         val description: EditText       = view?.findViewById(R.id.editText_bill_description)!!
         val createdDate: EditText       = view?.findViewById(R.id.edit_text_bill_created_date)!!
@@ -253,21 +427,21 @@ public final class CreateBillFragment : Fragment(R.layout.fragment_create_bill)
         if (
             (tea.text.toString().toDouble() < BillConstraints.minTeaValue) ||
             (tea.text.toString().toDouble() > BillConstraints.maxTeaValue)
-            ) {
+        ) {
             this.makeToast("La TEA debe ser mayor o igual a ${BillConstraints.minTeaValue} y menor o igual a ${BillConstraints.maxTeaValue}")
             return false
         }
         if (
             (desgravamen.text.toString().toDouble() < BillConstraints.minDesgravamenValue) ||
             (desgravamen.text.toString().toDouble() > BillConstraints.maxDesgravamenValue)
-            ) {
+        ) {
             this.makeToast("El desgravamen debe ser mayor o igual a ${BillConstraints.minDesgravamenValue} y menor o igual a ${BillConstraints.maxDesgravamenValue}")
             return false
         }
         if (
             (assignedRetention.text.toString().toDouble() < BillConstraints.minRetentionValue) ||
             (assignedRetention.text.toString().toDouble() > BillConstraints.maxRetentionValue)
-            ) {
+        ) {
             this.makeToast("La retención debe ser mayor o igual a ${BillConstraints.minRetentionValue} y menor o igual a ${BillConstraints.maxRetentionValue}")
             return false
         }
@@ -313,7 +487,6 @@ public final class CreateBillFragment : Fragment(R.layout.fragment_create_bill)
 
         return true
     }
-
     private fun backButton(): Unit {
         val backButton: ImageButton = view?.findViewById(R.id.create_bill_back_button)!!
         backButton.setOnClickListener {
@@ -398,5 +571,11 @@ public final class CreateBillFragment : Fragment(R.layout.fragment_create_bill)
 
     private fun makeToast(message: String): Unit {
         Toast.makeText(this.requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+    private fun replaceFragment(fragment: Fragment): Unit {
+        val fragmentManager: FragmentManager = this.parentFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.main, fragment)
+        fragmentTransaction.commit()
     }
 }

@@ -2,8 +2,9 @@ package     com.rubdashen.finsimple.shared.api.bill.request
 
 
 
-public final data class BillCreationRequest(
+public final data class BillUpdateRequest(
     public val userId: Int,
+    public val billId: Int,
     public val title: String,
     public val description: String,
     public val billCreatedDate: String,

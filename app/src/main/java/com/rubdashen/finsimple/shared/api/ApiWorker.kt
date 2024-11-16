@@ -1,9 +1,10 @@
 package     com.rubdashen.finsimple.shared.api
 
-import com.rubdashen.finsimple.menu.wallet.bills.models.BillCreationInformation
+import com.rubdashen.finsimple.menu.wallet.bills.models.BillBaseInformation
 import com.rubdashen.finsimple.shared.api.bill.BillApiService
 import com.rubdashen.finsimple.shared.api.bill.response.BillCreationResponse
 import com.rubdashen.finsimple.shared.api.bill.response.BillInformationResponse
+import com.rubdashen.finsimple.shared.api.bill.response.BillUpdateResponse
 import      com.rubdashen.finsimple.shared.api.bill.response.BillViewInformationResponse
 import      com.rubdashen.finsimple.shared.api.user.UserApiService
 import      com.rubdashen.finsimple.shared.api.user.request.UserLoginRequest
@@ -85,7 +86,7 @@ public final class ApiWorker
 
             return call
         }
-        public fun createBill(bill: BillCreationInformation): Call<BillCreationResponse> {
+        public fun createBill(bill: BillBaseInformation): Call<BillCreationResponse> {
             val retrofit = Retrofit.Builder()
                 .baseUrl(FinSimpleSettings.apiUrl)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -106,6 +107,18 @@ public final class ApiWorker
             val service = retrofit.create(BillApiService::class.java)
             val call = service.billsInformation(
                 "Bearer ${UserWrapperSettings.token}", id
+            )
+
+            return call
+        }
+        public fun updateBill(id: Int, bill: BillBaseInformation): Call<BillUpdateResponse> {
+            val retrofit = Retrofit.Builder()
+                .baseUrl(FinSimpleSettings.apiUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            val service = retrofit.create(BillApiService::class.java)
+            val call = service.updateBill(
+                "Bearer ${UserWrapperSettings.token}", bill.toUpdateRequest(id)
             )
 
             return call
