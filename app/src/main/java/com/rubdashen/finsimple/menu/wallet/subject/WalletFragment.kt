@@ -137,9 +137,12 @@ public final class WalletFragment : Fragment(R.layout.fragment_wallet), OnItemCl
                 call: Call<List<BillViewInformationResponse>>,
                 t: Throwable
             ): Unit {
-                val companyText: TextView   = view?.findViewById(R.id.home_company_text)!!
-                companyText.text            = UserWrapperSettings.company
-                noBillsTextView.text        = originalText
+                try {
+                    val companyText: TextView   = view?.findViewById(R.id.home_company_text)!!
+                    companyText.text            = UserWrapperSettings.company
+                    noBillsTextView.text        = originalText
+                }
+                catch (_: Exception) { }
 
                 this@WalletFragment.makeToast("No se pudo cargar las letras")
             }

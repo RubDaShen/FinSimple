@@ -11,7 +11,7 @@ import      com.google.android.material.bottomnavigation.BottomNavigationView
 import      com.rubdashen.finsimple.menu.exit.ExitFragment
 import      com.rubdashen.finsimple.R
 import      com.rubdashen.finsimple.menu.wallet.subject.WalletFragment
-import      com.rubdashen.finsimple.menu.user.UserFragment
+import      com.rubdashen.finsimple.menu.user.subject.UserFragment
 import      com.rubdashen.finsimple.shared.api.ApiWorker
 import      com.rubdashen.finsimple.shared.api.user.response.UserInformationResponse
 import      com.rubdashen.finsimple.shared.user.UserWrapperSettings

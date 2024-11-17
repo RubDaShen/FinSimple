@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".menu.user.edit.EditUserInformationFragment">
+
+    <ImageButton
+        android:id="@+id/edit_user_information_back_button"
+        android:layout_width="69dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="24dp"
+        android:src="@drawable/back_icon"
+        app:layout_constraintBottom_toTopOf="@+id/jsk25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/jsk26"
+        android:layout_width="358dp"
+        android:layout_height="492dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/login_rectangle_shape"
+        android:backgroundTint="@color/light_green"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/jsk25" />
+
+    <EditText
+        android:id="@+id/edit_text_edit_ruc"
+        android:layout_width="340dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:background="@color/lighty_green"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@+id/jsk26"
+        app:layout_constraintStart_toStartOf="@+id/jsk26"
+        app:layout_constraintTop_toBottomOf="@+id/jsk31" />
+
+    <TextView
+        android:id="@+id/jsk23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bit_32"
+        android:textColor="@color/yellowish"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/jsk25"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/jsk25"
+        android:layout_width="358dp"
+        android:layout_height="61dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/login_rectangle_shape"
+        android:backgroundTint="@color/light_green"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/jsk24"
+        android:layout_width="337dp"
+        android:layout_height="49dp"
+        android:text="@string/bit_33"
+        android:textAlignment="center"
+        android:textColor="@color/brown"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/jsk25"
+        app:layout_constraintEnd_toEndOf="@+id/jsk25"
+        app:layout_constraintStart_toStartOf="@+id/jsk25"
+        app:layout_constraintTop_toTopOf="@+id/jsk25" />
+
+    <TextView
+        android:id="@+id/jsk29"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/bit_34"
+        android:textAlignment="center"
+        android:textColor="@color/brown"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/jsk26"
+        app:layout_constraintTop_toBottomOf="@+id/jsk28" />
+
+    <ImageView
+        android:id="@+id/jsk28"
+        android:layout_width="81dp"
+        android:layout_height="71dp"
+        android:layout_marginTop="28dp"
+        android:src="@drawable/generic_company"
+        app:layout_constraintEnd_toEndOf="@+id/jsk26"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/jsk26"
+        app:layout_constraintTop_toTopOf="@+id/jsk26" />
+
+    <EditText
+        android:id="@+id/edit_text_user_company"
+        android:layout_width="340dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/lighty_green"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/jsk26"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/jsk26"
+        app:layout_constraintTop_toBottomOf="@+id/jsk29" />
+
+    <EditText
+        android:id="@+id/edit_text_user_email"
+        android:layout_width="340dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/lighty_green"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/jsk26"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/jsk26"
+        app:layout_constraintTop_toBottomOf="@+id/jsk30" />
+
+    <TextView
+        android:id="@+id/jsk30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/bit_35"
+        android:textAlignment="center"
+        android:textColor="@color/brown"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/jsk26"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_user_company" />
+
+    <TextView
+        android:id="@+id/jsk31"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/bit_36"
+        android:textAlignment="center"
+        android:textColor="@color/brown"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/jsk26"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_user_email" />
+
+    <Button
+        android:id="@+id/button_cancel_edit_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/orange"
+        android:text="@string/bit_37"
+        app:layout_constraintBottom_toBottomOf="@+id/jsk26"
+        app:layout_constraintEnd_toStartOf="@+id/button_accept_edit_user"
+        app:layout_constraintStart_toStartOf="@+id/jsk26"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_edit_ruc" />
+
+    <Button
+        android:id="@+id/button_accept_edit_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/pale_yellow"
+        android:text="@string/bit_38"
+        app:layout_constraintBottom_toBottomOf="@+id/jsk26"
+        app:layout_constraintEnd_toEndOf="@+id/jsk26"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toStartOf="@+id/jsk26"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_edit_ruc" />
+</androidx.constraintlayout.widget.ConstraintLayout>

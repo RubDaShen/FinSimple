@@ -96,8 +96,7 @@ public final class CreateUpdateBillFragment : Fragment
         this.configureAction()
         this.configureBankSpinner(view)
         this.configureDatePickers()
-        this.createButton()
-        this.editButton()
+        this.createOrEditButton()
 
         this.autofillEditInformation()
         this.backButton()
@@ -189,15 +188,18 @@ public final class CreateUpdateBillFragment : Fragment
         }
     }
 
-    private fun createButton(): Unit {
-        val createButton = view?.findViewById<View>(R.id.create_or_update_bill_button)!!
+    private fun createOrEditButton(): Unit {
+        val createButton: Button = view?.findViewById(R.id.create_or_update_bill_button)!!
         createButton.setOnClickListener {
-            if (this.m_Action != EditTypeAction.CreateBill) return@setOnClickListener
-
             if (!this.checkBillInputs()) return@setOnClickListener
-            this.createBill()
+
+            when (this.m_Action) {
+                EditTypeAction.CreateBill -> this.createBill()
+                EditTypeAction.EditBill -> this.editBill()
+            }
         }
     }
+
     private fun createBill(): Unit {
         if (this.m_Action != EditTypeAction.CreateBill) return
 
@@ -262,16 +264,6 @@ public final class CreateUpdateBillFragment : Fragment
                 createButton.text = originalText
             }
         })
-    }
-
-    private fun editButton(): Unit {
-        val createButton = view?.findViewById<View>(R.id.create_or_update_bill_button)!!
-        createButton.setOnClickListener {
-            if (this.m_Action != EditTypeAction.EditBill) return@setOnClickListener
-
-            if (!this.checkBillInputs()) return@setOnClickListener
-            this.editBill()
-        }
     }
     private fun editBill(): Unit {
         if (this.m_Action != EditTypeAction.EditBill) return

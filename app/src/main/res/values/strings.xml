@@ -70,4 +70,20 @@
     <string name="bit_20">¿Estás seguro que deseas eliminar esta letra? No podrás deshacer el proceso después </string>
     <string name="bit_21">Cancelar</string>
     <string name="bit_22">Eliminar</string>
+    <string name="bit_23">Perfil</string>
+    <string name="bit_24">En esta sección puede revisar su perfil de cuenta y otros ajustes adicionales</string>
+    <string name="bit_25">Perfil</string>
+    <string name="bit_26">Editar perfil</string>
+    <string name="bit_27">Cerrar sesión</string>
+    <string name="bit_28">Información</string>
+    <string name="bit_29">Nombre de la compañía</string>
+    <string name="bit_30">Correo electrónico</string>
+    <string name="bit_31">RUC</string>
+    <string name="bit_32">Editar</string>
+    <string name="bit_33">Revise los datos ingresados y seleccione aquellos datos que necesita actualizar</string>
+    <string name="bit_34">Editar nombre de compañía</string>
+    <string name="bit_35">Editar correo electrónico</string>
+    <string name="bit_36">Editar RUC</string>
+    <string name="bit_37">Cancelar</string>
+    <string name="bit_38">Guardar</string>
 </resources>
