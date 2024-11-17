@@ -97,6 +97,8 @@ public final class MenuActivity : AppCompatActivity()
                     val userInformationResponse: UserInformationResponse? = response.body()
                     userInformationResponse?.let {
                         UserWrapperSettings.company = it.company
+                        UserWrapperSettings.email   = it.email
+                        UserWrapperSettings.ruc     = it.ruc
                     }
                 }
             }

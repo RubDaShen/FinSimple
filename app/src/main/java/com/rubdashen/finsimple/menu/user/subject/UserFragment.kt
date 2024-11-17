@@ -7,14 +7,20 @@ import      android.view.LayoutInflater
 import      android.view.View
 import      android.view.ViewGroup
 import      android.widget.ImageButton
-import      android.widget.Toast
+import android.widget.TextView
 import      androidx.fragment.app.FragmentManager
 import      androidx.fragment.app.FragmentTransaction
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import      com.google.android.material.bottomnavigation.BottomNavigationView
 import      com.rubdashen.finsimple.R
-import com.rubdashen.finsimple.lobby.MainActivity
-import com.rubdashen.finsimple.menu.user.edit.EditUserInformationFragment
-import com.rubdashen.finsimple.menu.user.information.UserInformationFragment
+import      com.rubdashen.finsimple.lobby.MainActivity
+import      com.rubdashen.finsimple.menu.user.edit.EditUserInformationFragment
+import      com.rubdashen.finsimple.menu.user.information.UserInformationFragment
+import com.rubdashen.finsimple.shared.api.ApiWorker
+import com.rubdashen.finsimple.shared.api.user.response.UserInformationResponse
+import com.rubdashen.finsimple.shared.user.UserWrapperSettings
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 public final class UserFragment : Fragment(R.layout.fragment_user)
@@ -47,6 +53,8 @@ public final class UserFragment : Fragment(R.layout.fragment_user)
         this.userInformationButton()
         this.userEditInformationButton()
         this.userLogoutButton()
+
+        this.userCompanyName()
     }
 
     private fun backButton(): Unit {
@@ -78,9 +86,34 @@ public final class UserFragment : Fragment(R.layout.fragment_user)
         }
     }
 
-    private fun makeToast(message: String): Unit {
-        Toast.makeText(this.requireContext(), message, Toast.LENGTH_SHORT).show()
+    private fun userCompanyName(): Unit {
+        val companyText: TextView = view?.findViewById(R.id.user_profile_company_text)!!
+        if (UserWrapperSettings.company.isNotEmpty()) {
+            companyText.text = UserWrapperSettings.company
+            return
+        }
+
+        val call: Call<UserInformationResponse> = ApiWorker.userInformation()
+        call.enqueue(object: Callback<UserInformationResponse> {
+            public override fun onResponse(
+                call: Call<UserInformationResponse>,
+                response: Response<UserInformationResponse>
+            ): Unit {
+                if (response.isSuccessful) {
+                    val userInformationResponse: UserInformationResponse? = response.body()
+                    userInformationResponse?.let {
+                        companyText.text = it.company
+                    }
+                }
+            }
+
+            public override fun onFailure(
+                call: Call<UserInformationResponse>,
+                t: Throwable
+            ): Unit { }
+        })
     }
+
     private fun replaceFragment(fragment: Fragment): Unit {
         val fragmentManager: FragmentManager = this.parentFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
