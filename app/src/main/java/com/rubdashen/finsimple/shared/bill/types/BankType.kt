@@ -11,13 +11,14 @@ public final enum class BankType
     Scotiabank,
     Pichincha,
     Bbva,
-    Bcp;
+    Bcp,
+    NoBankSelected;
 
     companion object {
         //  @Functions
         public fun toStringList(): List<String> {
             return listOf(
-                "Interbank", "Scotiabank", "Banco Pichincha", "Banco Bilbao Vizcaya Argentaria (BBVA)", "Banco de Crédito del Perú (BCP)"
+                "Interbank", "Scotiabank", "Banco Pichincha", "Banco Bilbao Vizcaya Argentaria (BBVA)", "Banco de Crédito del Perú (BCP)", "Ningún banco"
             )
         }
         public fun fromString(value: String): BankType {
@@ -27,6 +28,7 @@ public final enum class BankType
                 "Banco Pichincha" -> Pichincha
                 "Banco Bilbao Vizcaya Argentaria (BBVA)" -> Bbva
                 "Banco de Crédito del Perú (BCP)" -> Bcp
+                "Ningún banco" -> NoBankSelected
 
                 else -> throw BankNotFound()
             }
@@ -38,6 +40,7 @@ public final enum class BankType
                 Pichincha -> "Banco Pichincha"
                 Bbva -> "Banco Bilbao Vizcaya Argentaria (BBVA)"
                 Bcp -> "Banco de Crédito del Perú (BCP)"
+                NoBankSelected -> "Ningún banco"
             }
         }
     }

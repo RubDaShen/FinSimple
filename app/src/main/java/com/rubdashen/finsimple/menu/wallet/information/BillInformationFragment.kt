@@ -258,9 +258,9 @@ public final class BillInformationFragment : Fragment
         discountedDateView.text = information.billDiscountedDate
         nominalValueView.text = information.nominalValue.toString()
         bankTypeView.text = BankType.toString(BankType.entries[information.bankTypeId])
-        teaView.text = df7.format(information.tea * 100)
-        desgravamenView.text = df7.format(information.degravamen * 100) + "%"
-        assignedRetentionView.text = df7.format(information.assignedRetention * 100)
+        teaView.text = df7.format(information.tea) + "%"
+        desgravamenView.text = df7.format(information.degravamen) + "%"
+        assignedRetentionView.text = df7.format(information.assignedRetention) + "%"
         tepView.text =  df7.format(information.tep * 100) + "%"
         periodView.text = information.period.toString() + " días"
         discountedRateView.text = df7.format(information.discountedRate * 100) + "%"

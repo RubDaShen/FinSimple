@@ -5,25 +5,26 @@ import      androidx.fragment.app.Fragment
 import      android.view.LayoutInflater
 import      android.view.View
 import      android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
+import      android.widget.Button
+import      android.widget.EditText
 import      android.widget.ImageButton
-import android.widget.TextView
+import      android.widget.TextView
 import      android.widget.Toast
 import      androidx.fragment.app.FragmentManager
 import      androidx.fragment.app.FragmentTransaction
 import      com.rubdashen.finsimple.R
 import      com.rubdashen.finsimple.menu.user.subject.UserFragment
-import com.rubdashen.finsimple.shared.api.ApiWorker
-import com.rubdashen.finsimple.shared.api.user.request.UserUpdateRequest
-import com.rubdashen.finsimple.shared.api.user.response.UserInformationResponse
-import com.rubdashen.finsimple.shared.api.user.response.UserUpdateResponse
-import com.rubdashen.finsimple.shared.tools.Functions
-import com.rubdashen.finsimple.shared.user.UserConstraints
-import com.rubdashen.finsimple.shared.user.UserWrapperSettings
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import      com.rubdashen.finsimple.shared.api.ApiWorker
+import      com.rubdashen.finsimple.shared.api.user.request.UserUpdateRequest
+import      com.rubdashen.finsimple.shared.api.user.response.UserInformationResponse
+import      com.rubdashen.finsimple.shared.api.user.response.UserUpdateResponse
+import      com.rubdashen.finsimple.shared.tools.Functions
+import      com.rubdashen.finsimple.shared.user.UserConstraints
+import      com.rubdashen.finsimple.shared.user.UserWrapperSettings
+import      retrofit2.Call
+import      retrofit2.Callback
+import      retrofit2.Response
+
 
 
 public final class EditUserInformationFragment : Fragment(R.layout.fragment_edit_user_information)

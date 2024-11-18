@@ -161,7 +161,7 @@
                     android:text="@string/b_i_t_4"
                     android:textColor="@color/light_gray"
                     app:layout_constraintStart_toStartOf="@+id/bill_information_inside_holder"
-                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -172,7 +172,7 @@
                     android:text="@string/bit_5"
                     android:textColor="@color/light_gray"
                     app:layout_constraintStart_toStartOf="@+id/bill_information_inside_holder"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
                 <TextView
                     android:id="@+id/textView8"
@@ -183,7 +183,7 @@
                     android:text="@string/bit_6"
                     android:textColor="@color/light_gray"
                     app:layout_constraintStart_toStartOf="@+id/bill_information_inside_holder"
-                    app:layout_constraintTop_toBottomOf="@+id/textView7" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
                 <TextView
                     android:id="@+id/tvbi_title"
@@ -223,7 +223,7 @@
                     android:layout_marginTop="4dp"
                     android:textColor="@color/white"
                     app:layout_constraintStart_toEndOf="@+id/textView6"
-                    app:layout_constraintTop_toBottomOf="@+id/tvbi_created_date" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvbi_discounted_date" />
 
                 <TextView
                     android:id="@+id/tvbi_discounted_date"
@@ -233,28 +233,28 @@
                     android:layout_marginTop="4dp"
                     android:textColor="@color/white"
                     app:layout_constraintStart_toEndOf="@+id/textView7"
-                    app:layout_constraintTop_toBottomOf="@+id/tvbi_due_date" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvbi_created_date" />
 
                 <TextView
                     android:id="@+id/tvbi_nominal_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="82dp"
+                    android:layout_marginStart="81dp"
                     android:layout_marginTop="4dp"
                     android:textColor="@color/white"
                     app:layout_constraintStart_toEndOf="@+id/textView8"
-                    app:layout_constraintTop_toBottomOf="@+id/tvbi_discounted_date" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvbi_due_date" />
 
                 <TextView
                     android:id="@+id/textView17"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="66dp"
+                    android:layout_marginStart="65dp"
                     android:layout_marginTop="4dp"
                     android:text="@string/sol_pen_symbol"
                     android:textColor="@color/white"
                     app:layout_constraintStart_toEndOf="@+id/textView8"
-                    app:layout_constraintTop_toBottomOf="@+id/tvbi_discounted_date" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvbi_due_date" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -564,6 +564,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/fade_black"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -575,6 +576,7 @@
         android:layout_height="297dp"
         android:background="@drawable/login_rectangle_shape"
         android:backgroundTint="@color/light_green"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -589,6 +591,7 @@
         android:textColor="@color/dark_gray"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/background_shade"
         app:layout_constraintHorizontal_bias="0.495"
@@ -603,6 +606,7 @@
         android:layout_marginTop="25dp"
         android:backgroundTint="@color/pale_yellow"
         android:text="@string/bit_21"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/delete_bill_yes_button"
         app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintStart_toStartOf="@+id/bill_delete_dialog_holder"
@@ -615,6 +619,7 @@
         android:layout_marginTop="25dp"
         android:backgroundTint="@color/orange"
         android:text="@string/bit_22"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/bill_delete_dialog_holder"
         app:layout_constraintHorizontal_bias="0.769"
         app:layout_constraintStart_toStartOf="@+id/bill_delete_dialog_holder"

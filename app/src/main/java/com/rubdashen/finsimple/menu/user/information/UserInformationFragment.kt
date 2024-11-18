@@ -19,6 +19,7 @@ import      retrofit2.Callback
 import      retrofit2.Response
 
 
+
 public final class UserInformationFragment : Fragment(R.layout.fragment_user_information)
 {
 //	|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-|

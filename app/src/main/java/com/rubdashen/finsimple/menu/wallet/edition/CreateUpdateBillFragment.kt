@@ -134,7 +134,10 @@ public final class CreateUpdateBillFragment : Fragment
                 val bankType: BankType      = BankType.fromString(selectedOption)
                 val radioGroup: RadioGroup  = viewParent.findViewById(R.id.radio_group_use_bank)!!
 
-                if (radioGroup.checkedRadioButtonId != -1) {
+                if (
+                    (radioGroup.checkedRadioButtonId != -1) &&
+                    (radioGroup.checkedRadioButtonId == R.id.radio_use_bank_yes)
+                    ) {
                     this@CreateUpdateBillFragment.autofillBankInformation(bankType)
                 }
             }
@@ -497,19 +500,21 @@ public final class CreateUpdateBillFragment : Fragment
 
             when (checkedId) {
                 R.id.radio_use_bank_yes -> {
-                    this.autofillBankInformation(bankType)
+                    if (bankType != BankType.NoBankSelected) {
+                        this.autofillBankInformation(bankType)
 
-                    tea.clearFocus()
-                    tea.isFocusable = false
-                    tea.isFocusableInTouchMode = false
+                        tea.clearFocus()
+                        tea.isFocusable = false
+                        tea.isFocusableInTouchMode = false
 
-                    desgravamen.clearFocus()
-                    desgravamen.isFocusable = false
-                    desgravamen.isFocusableInTouchMode = false
+                        desgravamen.clearFocus()
+                        desgravamen.isFocusable = false
+                        desgravamen.isFocusableInTouchMode = false
 
-                    assignedRetention.clearFocus()
-                    assignedRetention.isFocusable = false
-                    assignedRetention.isFocusableInTouchMode = false
+                        assignedRetention.clearFocus()
+                        assignedRetention.isFocusable = false
+                        assignedRetention.isFocusableInTouchMode = false
+                    }
                 }
                 R.id.radio_use_bank_no -> {
                     tea.setText("")
@@ -558,6 +563,7 @@ public final class CreateUpdateBillFragment : Fragment
                 desgravamen.setText(BankTypeConstraint.desgravamenBcp.toString())
                 assignedRetention.setText(BankTypeConstraint.retentionBcp.toString())
             }
+            BankType.NoBankSelected -> { }
         }
     }
 
