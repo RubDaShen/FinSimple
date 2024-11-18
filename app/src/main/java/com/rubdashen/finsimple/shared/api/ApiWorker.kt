@@ -11,7 +11,9 @@ import      com.rubdashen.finsimple.shared.api.bill.response.BillViewInformation
 import      com.rubdashen.finsimple.shared.api.user.UserApiService
 import      com.rubdashen.finsimple.shared.api.user.request.UserLoginRequest
 import      com.rubdashen.finsimple.shared.api.user.request.UserRegisterRequest
+import com.rubdashen.finsimple.shared.api.user.request.UserUpdateRequest
 import      com.rubdashen.finsimple.shared.api.user.response.UserInformationResponse
+import com.rubdashen.finsimple.shared.api.user.response.UserUpdateResponse
 import      com.rubdashen.finsimple.shared.user.UserWrapperSettings
 import      okhttp3.MediaType.Companion.toMediaType
 import      okhttp3.OkHttpClient
@@ -44,6 +46,7 @@ public final class ApiWorker
         //	-------------------------------------------
         //			        Functions
         //	-------------------------------------------
+        //  # User
         public fun loginUser(login: UserLoginRequest): Request {
             val requestBody: RequestBody = RequestBody.create("application/json; charset=utf-8".toMediaType(), login.toJsonString())
 
@@ -62,7 +65,6 @@ public final class ApiWorker
                 .addHeader("Content-Type", "application/json")
                 .build()
         }
-
         public fun userInformation(): Call<UserInformationResponse> {
             val retrofit = Retrofit.Builder()
                 .baseUrl(FinSimpleSettings.apiUrl)
@@ -75,7 +77,20 @@ public final class ApiWorker
 
             return call
         }
+        public fun updateUserInformation(update: UserUpdateRequest): Call<UserUpdateResponse> {
+            val retrofit = Retrofit.Builder()
+                .baseUrl(FinSimpleSettings.apiUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            val service = retrofit.create(UserApiService::class.java)
+            val call = service.updateUserInformation(
+                "Bearer ${UserWrapperSettings.token}", update
+            )
 
+            return call
+        }
+
+        //  # Bills
         public fun billsViewInformation(): Call<List<BillViewInformationResponse>> {
             val retrofit = Retrofit.Builder()
                 .baseUrl(FinSimpleSettings.apiUrl)

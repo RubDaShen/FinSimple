@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fancy_blue"
-    tools:context=".lobby.MainActivity" >
+    tools:context=".lobby.subject.MainActivity" >
 
     <TextView
         android:id="@+id/deco_background"

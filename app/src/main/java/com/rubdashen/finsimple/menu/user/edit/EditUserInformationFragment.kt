@@ -8,13 +8,18 @@ import      android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import      android.widget.ImageButton
+import android.widget.TextView
 import      android.widget.Toast
 import      androidx.fragment.app.FragmentManager
 import      androidx.fragment.app.FragmentTransaction
 import      com.rubdashen.finsimple.R
 import      com.rubdashen.finsimple.menu.user.subject.UserFragment
 import com.rubdashen.finsimple.shared.api.ApiWorker
+import com.rubdashen.finsimple.shared.api.user.request.UserUpdateRequest
 import com.rubdashen.finsimple.shared.api.user.response.UserInformationResponse
+import com.rubdashen.finsimple.shared.api.user.response.UserUpdateResponse
+import com.rubdashen.finsimple.shared.tools.Functions
+import com.rubdashen.finsimple.shared.user.UserConstraints
 import com.rubdashen.finsimple.shared.user.UserWrapperSettings
 import retrofit2.Call
 import retrofit2.Callback
@@ -112,27 +117,77 @@ public final class EditUserInformationFragment : Fragment(R.layout.fragment_edit
         }
     }
     private fun checkUserInputs(): Boolean {
-        val companyText: EditText   = view?.findViewById(R.id.edit_text_user_company)!!
-        val emailText: EditText     = view?.findViewById(R.id.edit_text_user_email)!!
-        val rucText: EditText       = view?.findViewById(R.id.edit_text_user_ruc)!!
+        val company: String = view?.findViewById<TextView>(R.id.edit_text_user_company)!!.text.toString()
+        val email: String   = view?.findViewById<TextView>(R.id.edit_text_user_email)!!.text.toString()
+        val ruc: String     = view?.findViewById<TextView>(R.id.edit_text_user_ruc)!!.text.toString()
 
-        if (companyText.text.isEmpty()) {
-            this.makeToast("Company name is empty")
+        //  > Inputs
+        if ((email.isEmpty() || company.isEmpty() || ruc.isEmpty())) {
+            this.makeToast("Por favor, complete todos los campos")
             return false
         }
-        if (emailText.text.isEmpty()) {
-            this.makeToast("Email is empty")
+        //  > Company
+        if (
+            (company.length < UserConstraints.minUserCompanyCharacter) ||
+            (company.length > UserConstraints.maxUserCompanyCharacter)
+        ) {
+            this.makeToast("El nombre de la empresa debe tener entre ${UserConstraints.minUserCompanyCharacter} y ${UserConstraints.maxUserCompanyCharacter} caracteres")
             return false
         }
-        if (rucText.text.isEmpty()) {
-            this.makeToast("RUC is empty")
+        //  > Email
+        if (!Functions.isValidEmail(email)) {
+            this.makeToast("Correo electrónico inválido")
+            return false
+        }
+        //  > RUC
+        if (ruc.length != UserConstraints.userRucCharacter) {
+            this.makeToast("El RUC debe tener ${UserConstraints.userRucCharacter} caracteres")
             return false
         }
 
         return true
     }
     private fun saveChanges(): Unit {
+        val company: String = view?.findViewById<EditText>(R.id.edit_text_user_company)!!.text.toString()
+        val email: String   = view?.findViewById<EditText>(R.id.edit_text_user_email)!!.text.toString()
+        val ruc: String     = view?.findViewById<EditText>(R.id.edit_text_user_ruc)!!.text.toString()
+        val saveButton: Button      = view?.findViewById(R.id.button_accept_edit_user)!!
+        val originalText: String    = saveButton.text.toString()
 
+        saveButton.text = "Actualizando..."
+        val call: Call<UserUpdateResponse> = ApiWorker.updateUserInformation(
+            UserUpdateRequest(UserWrapperSettings.userId, company, email, ruc)
+        )
+        call.enqueue(object: Callback<UserUpdateResponse> {
+            public override fun onResponse(
+                call: Call<UserUpdateResponse>,
+                response: Response<UserUpdateResponse>
+            ): Unit {
+                if (response.isSuccessful) {
+                    val userInformationResponse: UserUpdateResponse? = response.body()
+                    userInformationResponse?.let {
+                        if (it.success) {
+                            UserWrapperSettings.email   = email
+                            UserWrapperSettings.company = company
+                            UserWrapperSettings.ruc     = ruc
+
+                            this@EditUserInformationFragment.replaceFragment(UserFragment())
+                            this@EditUserInformationFragment.makeToast("Información actualizada exitosamente")
+                        }
+                    }
+                }
+
+                saveButton.text = originalText
+            }
+
+            public override fun onFailure(
+                call: Call<UserUpdateResponse>,
+                t: Throwable
+            ): Unit {
+                saveButton.text = originalText
+                this@EditUserInformationFragment.makeToast("Error al actualizar la información")
+            }
+        })
     }
 
     private fun makeToast(message: String): Unit {

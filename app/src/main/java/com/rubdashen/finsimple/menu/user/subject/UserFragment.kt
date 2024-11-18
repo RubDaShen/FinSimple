@@ -12,7 +12,7 @@ import      androidx.fragment.app.FragmentManager
 import      androidx.fragment.app.FragmentTransaction
 import      com.google.android.material.bottomnavigation.BottomNavigationView
 import      com.rubdashen.finsimple.R
-import      com.rubdashen.finsimple.lobby.MainActivity
+import      com.rubdashen.finsimple.lobby.subject.MainActivity
 import      com.rubdashen.finsimple.menu.user.edit.EditUserInformationFragment
 import      com.rubdashen.finsimple.menu.user.information.UserInformationFragment
 import com.rubdashen.finsimple.shared.api.ApiWorker
