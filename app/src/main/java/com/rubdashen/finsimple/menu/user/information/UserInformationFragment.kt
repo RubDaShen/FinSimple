@@ -102,4 +102,4 @@ public final class UserInformationFragment : Fragment(R.layout.fragment_user_inf
         fragmentTransaction.replace(R.id.main, fragment)
         fragmentTransaction.commit()
     }
-}
+} 
